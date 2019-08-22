@@ -6,6 +6,7 @@ The blog contains functionalities of:
 -	Login
 -	Profile Update
 -	Posting, Updating, and Deleting Blog Post 
+
 GUI:
 -	Bootstrap 4
 -	Crispy forms 
