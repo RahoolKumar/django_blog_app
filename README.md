@@ -7,6 +7,7 @@ The blog contains functionalities of:
 -	Profile Update
 -	Posting, Updating, and Deleting Blog Post 
 - Pagination
+- Social Login
 
 GUI:
 -	Bootstrap 4
