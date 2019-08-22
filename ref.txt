@@ -1,0 +1,2 @@
+https://simpleisbetterthancomplex.com/tutorial/2016/10/24/how-to-add-social-login-to-django.html
+https://fosstack.com/how-to-add-google-authentication-in-django/

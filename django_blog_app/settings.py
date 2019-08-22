@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'social_django'         # <--
 ]
 
 MIDDLEWARE = [
@@ -50,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'social_django.middleware.SocialAuthExceptionMiddleware',  # <--
 ]
 
 ROOT_URLCONF = 'django_blog_app.urls'
@@ -65,6 +69,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',  # <--
+                'social_django.context_processors.login_redirect',  # <--
             ],
         },
     },
@@ -86,6 +93,17 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
+
+# Manual Change
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.open_id.OpenIdAuth',
+    'social_core.backends.google.GoogleOpenId',
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -115,7 +133,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
- 
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -126,12 +144,27 @@ MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'blog-home'
 LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'blog-home'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True 
+EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+
+
+# Github
+SOCIAL_AUTH_GITHUB_KEY = 'f952be4074dcfdefe36a'
+SOCIAL_AUTH_GITHUB_SECRET = '58be4be66ee561af8d9db57ddbd29cc11c1c3a97'
+
+# Facebook
+SOCIAL_AUTH_FACEBOOK_KEY = '2937229842986168'
+SOCIAL_AUTH_FACEBOOK_SECRET = '63d3e721e3d3323bc63df0b231c57ce8'
+
+# Google
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '924118813222-2lahihhh1j19v5alfq5n1t9vppfchvai.apps.googleusercontent.com'  # Paste CLient Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '8TIQnQk6dxP9o0D3q188wVLz'  # Paste Secret Key
