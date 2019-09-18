@@ -4,10 +4,13 @@ from PIL import Image
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # OneToOne relationship means one user can have only one profile and one profile is 
+    # associated with one user
+    
     img = models.ImageField(default='default.jpg', upload_to='profile_pics')
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return f'{ self.user.username } Profile'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

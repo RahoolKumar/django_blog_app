@@ -1,18 +1,22 @@
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-
-# Create your views here.
 
 
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
+            # is_valid means there is no redundant data that is being saved and follows the form registration criteria.
+            # Password did not match.
+            # Username already exists.
+            
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Your account has been created!. You can login here.')
+            messages.success(
+                request, f'Your account has been created!. You can login here.')
             return redirect('login')
     else:
         form = UserRegisterForm()
@@ -32,12 +36,12 @@ def profile(request):
             p_form.save()
             messages.success(request, f'Your account has been updated')
             return redirect('profile')
-    
+
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
-    context={
+    context = {
         'u_form': u_form,
         'p_form': p_form,
     }

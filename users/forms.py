@@ -8,7 +8,10 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
+        # model = User defines that this form is going to interact with model User
         fields = ['username', 'email', 'password1', 'password2']
+        # the fields we want to show in our register form
+        
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()

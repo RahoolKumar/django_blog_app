@@ -23,10 +23,12 @@ from django.conf.urls.static import static
 from blog import views as core_views
 
 
-
 urlpatterns = [
-    path('', include('blog.urls')),
     path('admin/', admin.site.urls),
+    # admin/ is a URL, e.g. 127.0.0.1/admin and admin.site.url is target where we see its content
+
+
+    path('', include('blog.urls')),
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
@@ -34,6 +36,8 @@ urlpatterns = [
     url(r'^oauth/', include('social_django.urls', namespace='social')),  # <--
     url(r'^settings/$', core_views.settings, name='settings'),
     url(r'^settings/password/$', core_views.password, name='password'),
+
+
 
     path('password-reset/',
          auth_views.PasswordResetView.as_view(

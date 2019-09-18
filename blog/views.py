@@ -3,10 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from . models import Post
@@ -18,18 +15,19 @@ from django.views.generic import (
     DeleteView,
 )
 
-@login_required
-def home(request):
-    context = {
-        'posts' : Post.objects.all()
-    }
-    return render(request, 'blog/home.html', context)
+# @login_required
+# def home(request):
+#     context = {
+#         'posts' : Post.objects.all()
+#     }
+#     return render(request, 'blog/home.html', context)
 
 
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/home.html' # <app> / <model>_<viewtype.html>
+    # what model to query in order to show the list    
     context_object_name = 'posts'
+    template_name = 'blog/home.html'            #<app> / <model>_<viewtype.html>
     ordering = ['-date_posted']
     paginate_by = 2
 
@@ -52,6 +50,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content']
 
+    # the method is associating new_post with logged_in user
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
@@ -64,24 +63,23 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-    
+     
     def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
+        post = self.get_object()                # getting current post
+        if self.request.user == post.author:    # confirming the logged_in user is whether author of the post  
             return True
         return False
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    success_url = '/'
+    success_url = '/'       # if post deleted successfully, it would redirect to homePage
 
     def test_func(self):
         post = self.get_object()
         if self.request.user == post.author:
             return True
         return False
-
 
 
 def about(request):
